@@ -1,5 +1,3 @@
-import java.util.*;
-
 class Solution {
     public int removeStones(int[][] stones) {
         // To track visited stones
