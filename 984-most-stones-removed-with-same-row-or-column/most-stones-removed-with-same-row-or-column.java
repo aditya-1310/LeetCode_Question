@@ -1,28 +1,25 @@
 class Solution {
     public int removeStones(int[][] stones) {
-        // To track visited stones
-        Set<int[]> visited = new HashSet<>();
-        int numOfIslands = 0;
+       Set<int []> s = new HashSet<>();
+       int ctn=0;
+       for(int stone[] : stones){
+       if(!s.contains(stone)){
+        dfs(stones,stone,s);
+        ctn++;
+       }
 
-        for (int[] stone : stones) {
-            if (!visited.contains(stone)) {
-                dfs(stones, stone, visited);
-                numOfIslands++;
-            }
-        }
-
-        // Total stones minus the number of islands gives the number of stones that can be removed
-        return stones.length - numOfIslands;
+       }
+       return stones.length-ctn;
     }
 
-    private void dfs(int[][] stones, int[] current, Set<int[]> visited) {
-        visited.add(current);
+    public void dfs(int[][]stones,int [] current,Set<int []>s){
+        s.add(current);
 
-        for (int[] stone : stones) {
-            if (!visited.contains(stone)) {
-                // Stones share the same row or column
-                if (stone[0] == current[0] || stone[1] == current[1]) {
-                    dfs(stones, stone, visited);
+        for(int []stone:stones){
+            if(!s.contains(stone)){
+
+                if(stone[0]==current[0] || stone[1] == current[1]){
+                    dfs(stones,stone,s);
                 }
             }
         }
