@@ -6,7 +6,7 @@ class Solution {
             arr[i] = true;
         }
 
-        for(int i=0;i<n;i++){
+        for(int i=0;i*i<n;i++){
             if(arr[i]== true){
                 for(int j=2*i;j<n;j=j+i){
                     arr[j]=false;
