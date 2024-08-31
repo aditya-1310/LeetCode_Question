@@ -14,7 +14,6 @@ class Solution {
             int node1 = edges[i][0];
             int node2 = edges[i][1];
             double probability = succProb[i];
-
             adjacencyList.computeIfAbsent(node1, k -> new ArrayList<>()).add(new Pair<>(node2, probability));
             adjacencyList.computeIfAbsent(node2, k -> new ArrayList<>()).add(new Pair<>(node1, probability));
         }
