@@ -1,33 +1,48 @@
 class Solution {
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
-        Map<Integer, List<Pair<Integer, Double>>> graph = new HashMap<>();
-        for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][0], v = edges[i][1];
-            double pathProb = succProb[i];
-            graph.computeIfAbsent(u, k -> new ArrayList<>()).add(new Pair<>(v, pathProb));
-            graph.computeIfAbsent(v, k -> new ArrayList<>()).add(new Pair<>(u, pathProb));
+        HashMap<Integer,ArrayList<Pair<Integer,Double>>> map  = new HashMap<>();
+        for(int i=0;i<edges.length;i++){
+            int u = edges[i][0];
+            int v = edges[i][1];
+            double w = succProb[i];
+            map.putIfAbsent(u,new ArrayList<>());
+            map.get(u).add(new Pair<>(v,w));
+            map.putIfAbsent(v,new ArrayList<>());
+            map.get(v).add(new Pair<>(u,w));
         }
-        
-        double[] maxProb = new double[n];
-        maxProb[start] = 1d;
-        
-        Queue<Integer> queue = new LinkedList<>();
-        queue.offer(start);
-        while (!queue.isEmpty()) {
-            int curNode = queue.poll();
-            for (Pair<Integer, Double> neighbor : graph.getOrDefault(curNode, new ArrayList<>())) {
-                int nxtNode = neighbor.getKey();
-                double pathProb = neighbor.getValue();
 
-                // Only update maxProb[nxtNode] if the current path increases
-                // the probability of reach nxtNode.
-                if (maxProb[curNode] * pathProb > maxProb[nxtNode]) {
-                    maxProb[nxtNode] = maxProb[curNode] * pathProb;
-                    queue.offer(nxtNode);
+        double maxpro[] = new double[n];
+        maxpro[start] =1d;
+        Queue<Integer> q = new LinkedList<>();
+        q.offer(start);
+        while(!q.isEmpty()){
+            int curr = q.remove();
+            for(Pair<Integer,Double> p : map.getOrDefault(curr,new ArrayList<>())){
+                int next = p.getKey();
+                double currpro = p.getValue();
+                if(maxpro[curr]*currpro > maxpro[next]){
+                    maxpro[next] = maxpro[curr]*currpro;
+                    q.offer(next);
                 }
             }
-        }
-        
-        return maxProb[end];
+        } 
+        return maxpro[end];
+    }
+}
+class Pair<K, V> {
+    private K key;
+    private V value;
+
+    public Pair(K key, V value) {
+        this.key = key;
+        this.value = value;
+    }
+
+    public K getKey() {
+        return key;
+    }
+
+    public V getValue() {
+        return value;
     }
 }
