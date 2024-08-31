@@ -1,51 +1,35 @@
-import java.util.*;
-
 class Solution {
-    public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
-        // Construct the graph using an adjacency list representation
-        Map<Integer, List<Pair<Integer, Double>>> graph = new HashMap<>();
-        for (int i = 0; i < edges.length; i++) {
-            int node1 = edges[i][0];
-            int node2 = edges[i][1];
-            double probability = succProb[i];
-            graph.computeIfAbsent(node1, k -> new ArrayList<>()).add(new Pair<>(node2, probability));
-            graph.computeIfAbsent(node2, k -> new ArrayList<>()).add(new Pair<>(node1, probability));
+    public double maxProbability(int n, int[][] edges, double[] succProb, int start_node, int end_node) {
+        Map<Integer, List<Pair<Double, Integer>>> graph = new HashMap<>();
+        int size = edges.length;
+        PriorityQueue<Pair<Double, Integer>> maxProbNodeHeap = new PriorityQueue<>((a, b)->(b.getValue() - a.getValue()));
+        for(int indx = 0; indx < size; indx++){
+           double probab = succProb[indx];
+           int firstNode = edges[indx][0];
+           int secondNode = edges[indx][1];
+           graph.putIfAbsent(firstNode, new ArrayList<>());
+           graph.putIfAbsent(secondNode, new ArrayList<>());
+           graph.get(firstNode).add(new Pair<Double, Integer>(probab, secondNode));
+           graph.get(secondNode).add(new Pair<Double, Integer>(probab, firstNode));  
         }
-
-        // Array to store the maximum probability to reach each node
-        double[] maxProbabilities = new double[n];
-        maxProbabilities[start] = 1.0;
-
-        // Priority queue to process nodes in descending order of probability
-        PriorityQueue<Pair<Double, Integer>> pq = new PriorityQueue<>((a, b) -> Double.compare(b.getKey(), a.getKey()));
-        pq.add(new Pair<>(1.0, start));
-
-        // Dijkstra's-like approach to calculate the maximum probability path
-        while (!pq.isEmpty()) {
-            Pair<Double, Integer> current = pq.poll();
-            double currentProb = current.getKey();
-            int currentNode = current.getValue();
-
-            // If the end node is reached, return the current probability
-            if (currentNode == end) {
-                return currentProb;
-            }
-
-            // Explore neighboring nodes
-            for (Pair<Integer, Double> neighbor : graph.getOrDefault(currentNode, new ArrayList<>())) {
-                int nextNode = neighbor.getKey();
-                double edgeProb = neighbor.getValue();
-                double newProb = currentProb * edgeProb;
-
-                // If a higher probability path to nextNode is found, update and push to the queue
-                if (newProb > maxProbabilities[nextNode]) {
-                    maxProbabilities[nextNode] = newProb;
-                    pq.add(new Pair<>(newProb, nextNode));
+        double frmSrcProb[] = new double[n];
+        frmSrcProb[start_node] = 1.0;
+        maxProbNodeHeap.offer(new Pair<Double, Integer>(frmSrcProb[start_node], start_node));
+        while(!maxProbNodeHeap.isEmpty()){
+            var currNodePr = maxProbNodeHeap.poll();
+            var currProb = currNodePr.getKey();
+            var currNode = currNodePr.getValue();
+            if(!graph.containsKey(currNode))continue;
+            for(var neighPr : graph.get(currNode)){ 
+                var neighProb = neighPr.getKey();
+                var neighNode = neighPr.getValue();
+                var newProb = currProb * neighProb;
+                if(newProb > frmSrcProb[neighNode]){
+                    frmSrcProb[neighNode] = newProb;
+                    maxProbNodeHeap.offer(new Pair<Double, Integer>(newProb, neighNode));
                 }
             }
         }
-
-        // Return 0 if there's no valid path to the end node
-        return 0.0;
+        return frmSrcProb[end_node];
     }
 }
