@@ -1,9 +1,9 @@
 class Solution {
     public double maxProbability(int n, int[][] edges, double[] succProb, int start, int end) {
         Map<Integer, List<Pair<Integer, Double>>> graph = new HashMap<>();
-        for (int i = 0; i < edges.length; i++) {
-            int u = edges[i][0], v = edges[i][1];
-            double pathProb = succProb[i];
+        for (int z = 0; z < edges.length; z++) {
+            int u = edges[z][0], v = edges[z][1];
+            double pathProb = succProb[z];
             graph.computeIfAbsent(u, k -> new ArrayList<>()).add(new Pair<>(v, pathProb));
             graph.computeIfAbsent(v, k -> new ArrayList<>()).add(new Pair<>(u, pathProb));
         }
