@@ -13,8 +13,7 @@ class Solution {
         reverse(nums, k, n - 1);
     }
 
-    // Helper function to reverse a portion of the array
-    private void reverse(int[] nums, int start, int end) {
+    public void reverse(int[] nums, int start, int end) {
         while (start < end) {
             int temp = nums[start];
             nums[start] = nums[end];
