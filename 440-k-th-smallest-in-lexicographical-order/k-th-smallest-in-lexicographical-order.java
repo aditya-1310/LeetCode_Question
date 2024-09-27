@@ -1,26 +1,30 @@
 class Solution {
-    private int getReqNum(long a, long b, long n) {
-        int gap = 0;
-        while (a <= n) {
-            gap += Math.min(n + 1, b) - a;
-            a *= 10;
-            b *= 10;
+    public int findKthNumber(int n, int k) {
+        k-=1;
+        int curr=1;
+        while(k>0){
+        int count = coun(curr,curr+1,n);
+        if(count <= k){
+            curr++;
+            k-=count;
         }
-        return gap;
+        else{
+            curr*=10;
+            k-=1;
+        }
+        }
+        return curr;
+    }
+    public int coun(long curr,long next,int n){
+        int currsum =0;
+        while(curr<=n){
+            currsum += next-curr;
+            curr*=10;
+            next *=10;
+
+            next=Math.min(next,(long)n+1);
+        }
+        return currsum;
     }
 
-    public int findKthNumber(int n, int k) {
-        long num = 1;
-        for (int i = 1; i < k;) {
-            int req = getReqNum(num, num + 1, n);
-            if (i + req <= k) {
-                i += req;
-                num++;
-            } else {
-                i++;
-                num *= 10;
-            }
-        }
-        return (int) num;
-    }
 }
