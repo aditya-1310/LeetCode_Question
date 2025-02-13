@@ -16,7 +16,7 @@ class Solution {
         while (maxHeap.peek() < k) {
             // Extract the largest element from the heap.
             long largest = maxHeap.poll();
-            long val = largest*2+maxHeap.poll();
+            long val = largest*2 + maxHeap.poll();
             maxHeap.offer(val);
             sum++; 
         }
