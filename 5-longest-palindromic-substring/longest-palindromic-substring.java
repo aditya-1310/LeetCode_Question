@@ -13,7 +13,6 @@ class Solution {
                    int len =j-i+1;
                    if(len>max){
                     max = len;
-
                     start  =i;
                    }
                 }
