@@ -1,7 +1,6 @@
 class Solution {
     public int[] pivotArray(int[] nums, int pivot) {
         List<Integer> arr = new ArrayList<>();
-        List<Integer> arr2 = new ArrayList<>();
         for(int i=0;i<nums.length;i++){
             if(nums[i] <pivot){
                 arr.add(nums[i]);
