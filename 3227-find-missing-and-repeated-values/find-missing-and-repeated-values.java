@@ -1,35 +1,30 @@
-import java.util.*;
-
 class Solution {
     public int[] findMissingAndRepeatedValues(int[][] grid) {
+
         int n = grid.length;
-        HashMap<Integer, Integer> mp = new HashMap<>();
-        
-        // Count occurrences of numbers in grid
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < n; j++) {
-                mp.put(grid[i][j], mp.getOrDefault(grid[i][j], 0) + 1);
+        HashMap<Integer,Integer> mp  = new HashMap<>();
+        for(int i=0;i<grid.length;i++){
+            for(int j=0;j<grid.length;j++){
+                mp.put(grid[i][j],mp.getOrDefault(grid[i][j],0)+1);
             }
         }
-
-        int a = 0, b = 0;
-        
-        // Find the repeated value
-        for (Map.Entry<Integer, Integer> entry : mp.entrySet()) {
-            if (entry.getValue() == 2) {
-                a = entry.getKey(); // The repeated number
-                break;
+        int a =0;int b=0;
+        for(Map.Entry<Integer,Integer> entry : mp.entrySet()){
+            if(entry.getValue()==2){
+              a =  entry.getKey();
+              break;
             }
         }
-        
-        // Find the missing value
-        for (int i = 1; i <= n * n; i++) {
+          for (int i = 1; i <= n * n; i++) {
             if (!mp.containsKey(i)) {
-                b = i; // The missing number
+                b = i; 
                 break;
             }
         }
+        
 
-        return new int[]{a, b};
+
+
+        return new int[]{a,b};
     }
 }
