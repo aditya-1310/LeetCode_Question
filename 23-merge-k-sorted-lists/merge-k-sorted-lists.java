@@ -15,18 +15,18 @@ class Solution {
         for(ListNode list:lists){
           if(list!=null)  pq.add(list);
         }
-            ListNode dummy = new ListNode(-1);
-            ListNode current = dummy;
+            ListNode newlist = new ListNode(-1);
+            ListNode temp = newlist;
 
         while(!pq.isEmpty()){
             ListNode node = pq.poll();
-            current.next = node;
-            current = current.next;
+            temp.next = node;
+            temp = temp.next;
 
             if(node.next != null) pq.add(node.next);
         }
         
 
-        return dummy.next;
+        return newlist.next;
     }
 }
