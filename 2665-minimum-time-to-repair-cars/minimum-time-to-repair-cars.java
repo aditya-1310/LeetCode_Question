@@ -1,34 +1,26 @@
-import java.util.Arrays;
-
 class Solution {
     public long repairCars(int[] ranks, int cars) {
-        Arrays.sort(ranks); // Sort ranks for efficiency
-        long low = 1, high = (long) ranks[0] * (long) cars * (long) cars; 
+        Arrays.sort(ranks);
+       long low = 1;long high = ranks[0] * (long) cars * (long) cars;
+       while(low < high){
+        long mid = low + (high-low)/2;
 
-        while (low < high) {
-            long mid = low + (high - low) / 2;
-            if (canRepairAll(ranks, cars, mid)) {
-                high = mid; // Try a smaller time
-            } else {
-                low = mid + 1; // Increase time
-            }
+        if(canrepaire(mid,ranks,cars)){
+            high = mid;
+        }else{
+            low = mid+1;
         }
-        return low;
+       }
+       return low;
+        
     }
+    public boolean canrepaire(long k , int ranks[], int cars){
+        int value =0;
 
-    private boolean canRepairAll(int[] ranks, int cars, long time) {
-        long count = 0;
-        for (int rank : ranks) {
-            count += Math.sqrt(time / rank);
-            if (count >= cars) return true; // Stop early
+        for(int rank:ranks){
+            value+= Math.sqrt(k/rank);
+            if(value>=cars) return true;
         }
         return false;
-    }
-
-    public static void main(String[] args) {
-        Solution sol = new Solution();
-        int[] ranks = {4, 2, 3};
-        int cars = 10;
-        System.out.println(sol.repairCars(ranks, cars)); // Output: 16
     }
 }
