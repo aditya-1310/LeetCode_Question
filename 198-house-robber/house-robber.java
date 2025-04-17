@@ -1,17 +1,16 @@
 class Solution {
-    int t[] = new int[101];
+    int dp[];
     public int rob(int[] nums) {
-        int n = nums.length;
-            Arrays.fill(t,-1);
-       
-        return solve(nums,0,n);
+            dp = new int[nums.length];
+            Arrays.fill(dp,-1);
+        return solve(nums,0,dp);
     }
-    public int solve(int []nums,int i,int n){
-            if(i>=n) return 0;
-            if(t[i]!=-1) return t[i];
-        int take  = nums[i]+solve(nums,i+2,n);
-        int skip = solve(nums,i+1,n);
+    public int solve(int []nums,int i,int []dp){
+        if(i >=nums.length) return 0;
+        if(dp[i]!=-1) return dp[i];
+        int t  = nums[i] + solve(nums,i+2,dp);
+        int nt = solve(nums,i+1,dp);
 
-        return t[i] =  Math.max(take,skip);
+        return dp[i] = Math.max(t,nt);
     }
 }
